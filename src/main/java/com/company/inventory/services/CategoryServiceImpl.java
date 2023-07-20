@@ -1,6 +1,8 @@
 package com.company.inventory.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +56,46 @@ public class CategoryServiceImpl implements ICategoryService{
 	}
 		
 		// retorno mi respuesta que va a ser una clase responseEntity (respuesta, y el codigo hhtp que devuelve ok)
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<CategoryResponseRest> searchById(Long id) {
+
+		CategoryResponseRest response = new CategoryResponseRest ();
+		List<Category>List = new ArrayList<>();
+		try {
+			
+			/*el metodo faindById busca la base d e datos con el id que le pase  */
+			
+			/*el metodo optional devuelve un objeto optional */
+			Optional<Category> category = categoryDao.findById(id);
+			
+			if(category.isPresent()) {
+				List.add(category.get());
+				response.getCategoryResponse().setCategory(List);
+				
+				response.setMetadata("Rspuesta ok","00","Categoria  encontrada ");
+				
+			}else {
+				response.setMetadata("Rspuesta nok","-1","Categoria no encontrada ");
+				
+				/**
+				 * si no encuentra el id solicitado devuelve que no encuentra,es con 
+				 * un not faund que es el 404 en lugar del error 505
+				 */
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
+				
+			}
+		}catch (Exception e) {
+			response.setMetadata("Rspuesta nok","-1","Error al consultar por id ");
+			e.getStackTrace();
+			
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			
+	}
+		
 		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
 	}
 }

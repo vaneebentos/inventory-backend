@@ -9,4 +9,6 @@ public interface ICategoryService {
  * que da una respuesta  http con un codigo respectivo 
  * y en global una respuesta cuson que engloba lo que esta en <> el metodo search*/
 	public ResponseEntity<CategoryResponseRest> search ();
+	
+	public ResponseEntity<CategoryResponseRest> searchById (Long id);
 }
