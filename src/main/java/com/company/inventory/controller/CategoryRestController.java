@@ -4,18 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.inventory.model.Category;
 import com.company.inventory.response.CategoryResponseRest;
 import com.company.inventory.services.ICategoryService;
 
 /*para identificar esta clase como restcontroller,debe tener el decorador*/
 
 @RestController
-/*"" ahi indica i uri a nivel general*/
+/*"" ahi indica mi uri a nivel general*/
 @RequestMapping("/api/v1")
-public class CategoryRestCon {
+public class CategoryRestController {
 	
 	/*se inyecta un objeto de tipo de interfas,importando el servicio creado 
 	 * en las clases anteriores  */
@@ -37,6 +40,7 @@ public class CategoryRestCon {
 	//ingresa en este metodo para consumir el codigo siguiente 
 	public ResponseEntity<CategoryResponseRest> searchCategories (){
 		
+		// este metodo es para buscar las categorias 
 		ResponseEntity<CategoryResponseRest> response = service.search();
 		return response;
 	}
@@ -47,10 +51,7 @@ public class CategoryRestCon {
 	 */
 	
 	
-	
-	
-	
-	/*la uri d eeste metodo recibe un id atra vez de las {}
+	/*la uri de este metodo recibe un id atra vez de las {}
 	 * de esa forma paso el id por la uri y recupera como una variavre atravez del path
 	 * como tipo long 
 	 * de esta forma se resive la peticion cuando llame un cliente */
@@ -63,4 +64,21 @@ public class CategoryRestCon {
 			return response;
 			
 	}
+
+/**
+ * Get categories by id
+ * @param category 
+ * @return
+ * este metodo guarda las categorias , el decorador ResquesBody 
+ */
+
+
+	@PostMapping ("/categories")
+	
+	public ResponseEntity<CategoryResponseRest> save (@RequestBody Category category){
+		
+		ResponseEntity<CategoryResponseRest> response = service.save(category);
+		return response;
+		
+}
 }
