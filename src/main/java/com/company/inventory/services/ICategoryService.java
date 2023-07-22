@@ -15,5 +15,5 @@ public interface ICategoryService {
 	
 	// esta es la interfas 
 	public ResponseEntity<CategoryResponseRest> save (Category category);
-	
+	public ResponseEntity<CategoryResponseRest> update(Category category,Long id );
 }
